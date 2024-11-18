@@ -35,6 +35,11 @@ export const validateSignUpData = [
     .withMessage("Years is required")
     .isInt({ min: 18 })
     .withMessage("Years must be a valid number greater than or equal to 18"),
+  body("address")
+    .notEmpty()
+    .withMessage("Address is required")
+    .isString()
+    .withMessage("Address must be a string"),
 
   (req, res, next) => {
     const errors = validationResult(req);
@@ -80,6 +85,7 @@ export const validateLogInData = [
     .notEmpty()
     .withMessage("Email is required")
     .isEmail()
+    .matches(/^\w+([.-_+]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/)
     .withMessage("Invalid email format"),
   body("password")
     .notEmpty()
@@ -110,3 +116,23 @@ export const authenticateToken = (req, res, next) => {
     res.status(403).json({ message: "Invalid or expired token" });
   }
 };
+
+export const authorizeRole = (rolesAllowed) => (req, res, next) => {
+  const userRoles = req.user.roles;
+
+  if (!rolesAllowed.some((role) => userRoles.includes(role))) {
+    return res.status(403).json({ message: "Access denied" });
+  }
+
+  next();
+};
+
+// export const authorizeAdmin = (req, res, next) => {
+//   const userRoles = req.user?.roles || [];
+
+//   if (!userRoles.includes("admin")) {
+//     return res.status(403).json({ message: "Access denied. Admins only." });
+//   }
+
+//   next();
+// };

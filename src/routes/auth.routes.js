@@ -5,7 +5,10 @@ import {
   validatePasswordsMatch,
   validateSignUpData,
 } from "../middleware/auth.middleware.js";
-import { logInServices, signUpServices } from "../services/auth.services.js";
+import {
+  logInControllers,
+  signUpControllers,
+} from "../controllers/auth.controllers.js";
 
 const router = Router();
 
@@ -15,9 +18,9 @@ router
     validateSignUpData,
     checkEmailExists,
     validatePasswordsMatch,
-    signUpServices
+    signUpControllers
   );
 
-router.route("/logIn").post(validateLogInData, logInServices);
+router.route("/logIn").post(validateLogInData, logInControllers);
 
 export default router;

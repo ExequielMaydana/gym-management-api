@@ -1,13 +1,10 @@
-import { getAllClients } from "../controllers/clients.controllers.js";
+import Clients from "../models/clients.model.js";
 
-export const getAllClientsService = async (req, res, next) => {
+export const getAllClientsServices = async () => {
   try {
-    const clients = await getAllClients();
-    res
-      .status(200)
-      .json({ message: "", clients: clients, totalClients: clients.length });
+    const allClients = await Clients.find({});
+    return allClients;
   } catch (error) {
-    res.status(500).json({ message: error.message });
-    next();
+    throw new Error(error.message);
   }
 };

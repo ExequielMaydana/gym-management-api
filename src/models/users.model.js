@@ -31,6 +31,10 @@ const usersSchema = new Schema(
       type: Number,
       required: true,
     },
+    address: {
+      type: String,
+      required: true,
+    },
     // profileImage: {
     //   imageUrl: String,
     //   publicId: String,
